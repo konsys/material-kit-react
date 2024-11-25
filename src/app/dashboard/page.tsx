@@ -1,3 +1,4 @@
+"use client"
 import * as React from 'react';
 import type { Metadata } from 'next';
 import Grid from '@mui/material/Unstable_Grid2';
@@ -12,14 +13,37 @@ import { TasksProgress } from '@/components/dashboard/overview/tasks-progress';
 import { TotalCustomers } from '@/components/dashboard/overview/total-customers';
 import { TotalProfit } from '@/components/dashboard/overview/total-profit';
 import { Traffic } from '@/components/dashboard/overview/traffic';
+import { quote } from '../../modules/arbitrage/quote';
+import { useEffect, useState } from 'react';
+import { TokensAvailable } from '../../constants';
 
-export const metadata = { title: `Overview | Dashboard | ${config.site.name}` } satisfies Metadata;
+
 
 export default function Page(): React.JSX.Element {
+
+  const [num, setNum] = useState(0)
+  const onQuote = React.useCallback(async () => {
+    const value = 1000
+
+      const q = Number(
+        await quote(
+          value,
+          TokensAvailable['USDC'],
+          TokensAvailable['WETH'],
+        ),
+      )
+      setNum(q)
+    return q;
+  }, [])
+
+  useEffect( ()=>{
+   onQuote()
+  }, [])
+  
   return (
     <Grid container spacing={3}>
       <Grid lg={3} sm={6} xs={12}>
-        <Budget diff={12} trend="up" sx={{ height: '100%' }} value="$24k" />
+        <Budget diff={12} trend="up" sx={{ height: '100%' }} value={`$${num}`} />
       </Grid>
       <Grid lg={3} sm={6} xs={12}>
         <TotalCustomers diff={16} trend="down" sx={{ height: '100%' }} value="1.6k" />

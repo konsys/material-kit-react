@@ -13,7 +13,9 @@
     "lint:fix": "next lint --fix",
     "typecheck": "tsc --noEmit",
     "format:write": "prettier --write \"**/*.{js,jsx,mjs,ts,tsx,mdx}\" --cache",
-    "format:check": "prettier --check \"**/*.{js,jsx,mjs,ts,tsx,mdx}\" --cache"
+    "format:check": "prettier --check \"**/*.{js,jsx,mjs,ts,tsx,mdx}\" --cache",
+    "install:chain": "curl -L https://foundry.paradigm.xyz | bash && clear && echo $0 | exec && foundryup",
+    "chain": "anvil --chain-id 1337 --fork-url https://mainnet.chainnodes.org/72ae682a-b3a9-4fea-8c42-60d08228ea26"
   },
   "dependencies": {
     "@emotion/cache": "11.11.0",
@@ -30,13 +32,16 @@
     "@mui/utils": "5.15.20",
     "@mui/x-date-pickers": "7.7.1",
     "@phosphor-icons/react": "2.1.6",
+    "@uniswap/sdk-core": "^6.0.0",
+    "@uniswap/v3-sdk": "^3.19.0",
     "apexcharts": "3.49.2",
     "dayjs": "1.11.11",
+    "ethers": "^6.13.4",
     "next": "14.2.4",
     "react": "18.3.1",
     "react-apexcharts": "1.4.1",
     "react-dom": "18.3.1",
-    "react-hook-form": "7.52.0",
+    "react-hook-form": "^7.52.0",
     "zod": "3.23.8"
   },
   "devDependencies": {

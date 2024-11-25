@@ -1,15 +1,13 @@
-import { ethers } from 'ethers'
-import { CurrentConfig } from '../config'
+import { ethers, Provider } from 'ethers'
 import { computePoolAddress } from '@uniswap/v3-sdk'
 import Quoter from '@uniswap/v3-periphery/artifacts/contracts/lens/Quoter.sol/Quoter.json'
 import IUniswapV3PoolABI from '@uniswap/v3-core/artifacts/contracts/interfaces/IUniswapV3Pool.sol/IUniswapV3Pool.json'
-import {
-  POOL_FACTORY_CONTRACT_ADDRESS,
-  QUOTER_CONTRACT_ADDRESS,
-} from '../libs/constants'
-import { getProvider } from '../libs/providers'
-import { toReadableAmount, fromReadableAmount } from '../libs/conversion'
+
+
 import { Token } from '@uniswap/sdk-core'
+import { SwapConfig } from '../../config'
+import { QUOTER_CONTRACT_ADDRESS, POOL_FACTORY_CONTRACT_ADDRESS } from '../../constants'
+import { fromReadableAmount, toReadableAmount } from '../../utils'
 
 export async function quote(
   inputAmout: number,
@@ -49,7 +47,7 @@ async function getPoolConstants(
     factoryAddress: POOL_FACTORY_CONTRACT_ADDRESS,
     tokenA: tokenIn0,
     tokenB: tokenIn1,
-    fee: CurrentConfig.tokens.poolFee,
+    fee: SwapConfig.tokens.poolFee,
   })
 
   const poolContract = new ethers.Contract(
@@ -70,3 +68,7 @@ async function getPoolConstants(
     fee,
   }
 }
+
+export function getProvider(): Provider {
+    return new ethers.JsonRpcProvider(SwapConfig.rpc.local)
+  }
