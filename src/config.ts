@@ -37,3 +37,4 @@ export const SwapConfig: ExampleConfig = {
     poolFee: FeeAmount.MEDIUM,
   },
 }
+

@@ -70,5 +70,5 @@ async function getPoolConstants(
 }
 
 export function getProvider(): Provider {
-    return new ethers.JsonRpcProvider(SwapConfig.rpc.local)
-  }
+  return new ethers.JsonRpcProvider(SwapConfig.rpc.local)
+}

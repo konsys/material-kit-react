@@ -4,7 +4,7 @@ import type { Metadata } from 'next';
 import Grid from '@mui/material/Unstable_Grid2';
 import dayjs from 'dayjs';
 
-import { config } from '@/config';
+
 import { Budget } from '@/components/dashboard/overview/budget';
 import { LatestOrders } from '@/components/dashboard/overview/latest-orders';
 import { LatestProducts } from '@/components/dashboard/overview/latest-products';
@@ -16,34 +16,28 @@ import { Traffic } from '@/components/dashboard/overview/traffic';
 import { quote } from '../../modules/arbitrage/quote';
 import { useEffect, useState } from 'react';
 import { TokensAvailable } from '../../constants';
+import { useQuery } from 'react-query';
 
 
 
 export default function Page(): React.JSX.Element {
 
-  const [num, setNum] = useState(0)
-  const onQuote = React.useCallback(async () => {
-    const value = 1000
-
-      const q = Number(
-        await quote(
-          value,
-          TokensAvailable['USDC'],
-          TokensAvailable['WETH'],
-        ),
-      )
-      setNum(q)
-    return q;
-  }, [])
-
-  useEffect( ()=>{
-   onQuote()
-  }, [])
+  const { isFetching, data } = useQuery({
+    queryKey: ['repoData'],
+    queryFn: () =>
+      quote(
+        1,
+        TokensAvailable['WETH'],
+        TokensAvailable['USDT'],
+      ),
+  })
   
+  console.log('data',data )
+  console.log('isPending', isFetching)
   return (
     <Grid container spacing={3}>
       <Grid lg={3} sm={6} xs={12}>
-        <Budget diff={12} trend="up" sx={{ height: '100%' }} value={`$${num}`} />
+        <Budget diff={12} trend="up" sx={{ height: '100%' }} value={`ETH: ${0} USDT`} />
       </Grid>
       <Grid lg={3} sm={6} xs={12}>
         <TotalCustomers diff={16} trend="down" sx={{ height: '100%' }} value="1.6k" />
