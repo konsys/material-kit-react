@@ -1,6 +1,5 @@
 "use client"
 import * as React from 'react';
-import type { Metadata } from 'next';
 import Grid from '@mui/material/Unstable_Grid2';
 import dayjs from 'dayjs';
 
@@ -14,7 +13,6 @@ import { TotalCustomers } from '@/components/dashboard/overview/total-customers'
 import { TotalProfit } from '@/components/dashboard/overview/total-profit';
 import { Traffic } from '@/components/dashboard/overview/traffic';
 import { quote } from '../../modules/arbitrage/quote';
-import { useEffect, useState } from 'react';
 import { TokensAvailable } from '../../constants';
 import { useQuery } from 'react-query';
 
@@ -30,14 +28,13 @@ export default function Page(): React.JSX.Element {
         TokensAvailable['WETH'],
         TokensAvailable['USDT'],
       ),
+    refetchInterval: 1000
   })
-  
-  console.log('data',data )
-  console.log('isPending', isFetching)
+
   return (
     <Grid container spacing={3}>
       <Grid lg={3} sm={6} xs={12}>
-        <Budget diff={12} trend="up" sx={{ height: '100%' }} value={`ETH: ${0} USDT`} />
+        <Budget diff={12} trend="up" sx={{ height: '100%' }} value={`ETH: ${data} USDT`} loading={isFetching} />
       </Grid>
       <Grid lg={3} sm={6} xs={12}>
         <TotalCustomers diff={16} trend="down" sx={{ height: '100%' }} value="1.6k" />
