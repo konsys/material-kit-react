@@ -31,10 +31,12 @@ export const SwapConfig: ExampleConfig = {
     arb: 'https://arb1.arbitrum.io/rpc',
     local: 'http://127.0.0.1:8545/',
     mainnet:
-      'https://mainnet.chainnodes.org/72ae682a-b3a9-4fea-8c42-60d08228ea26',
+      // 'https://mainnet.chainnodes.org/72ae682a-b3a9-4fea-8c42-60d08228ea26',
+      'https://ethereum-rpc.publicnode.com'
   },
   tokens: {
     poolFee: FeeAmount.MEDIUM,
   },
 }
 
+// https://eth.llamarpc.com

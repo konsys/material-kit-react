@@ -15,6 +15,7 @@ import { Traffic } from '@/components/dashboard/overview/traffic';
 import { quote } from '../../modules/arbitrage/quote';
 import { TokensAvailable } from '../../constants';
 import { useQuery } from 'react-query';
+import { apiService } from '../../api/api';
 
 
 
@@ -28,22 +29,41 @@ export default function Page(): React.JSX.Element {
         TokensAvailable['WETH'],
         TokensAvailable['USDT'],
       ),
-    refetchInterval: 1000
+    refetchInterval: 5000
+  })
+  // v5/market/kline?category=inverse&symbol=BTCUSD&interval=60&start=1670601600000&end=1670608800000
+  // list[0]: startTime	string	Start time of the candle (ms)
+  // > list[1]: openPrice	string	Open price
+  // > list[2]: highPrice	string	Highest price
+  // > list[3]: lowPrice	string	Lowest price
+  // > list[4]: closePrice	string	Close price. Is the last traded price when the candle is not closed
+  // > list[5]: volume	string	Trade volume. Unit of contract: pieces of contract. Unit of spot: quantity of coins
+  // > list[6]: turnover	string	Turnover. Unit of figure: quantity of quota coin
+
+  const { isFetching: isFetchingBybit, data: bybitData } = useQuery({
+    queryKey: ['bybitData'],
+    queryFn: () => apiService.get('/v5/market/kline?category=inverse&symbol=ETHUSD&interval=60&limit=1&interval=1').then(({ result }) => result.list[0][4]),
+    refetchInterval: 5000
   })
 
+  const { isFetching: isFetchingBybit1, data: bybitData1 } = useQuery({
+    queryKey: ['bybitData1'],
+    queryFn: () => apiService.get('/v5/market/kline?category=inverse&symbol=BTCUSD&interval=60&limit=1&interval=1').then(({ result }) => result.list[0][4]),
+    refetchInterval: 5000
+  })
   return (
     <Grid container spacing={3}>
       <Grid lg={3} sm={6} xs={12}>
-        <Budget diff={12} trend="up" sx={{ height: '100%' }} value={`ETH: ${data} USDT`} loading={isFetching} />
+        <Budget diff={12} trend="up" sx={{ height: '100%' }} value={`ETHUSDT: ${data}`} loading={isFetching} />
       </Grid>
       <Grid lg={3} sm={6} xs={12}>
-        <TotalCustomers diff={16} trend="down" sx={{ height: '100%' }} value="1.6k" />
+        <TotalCustomers diff={16} trend="down" sx={{ height: '100%' }} value={`ETHUSDT: ${bybitData}`} loading={isFetchingBybit} />
       </Grid>
       <Grid lg={3} sm={6} xs={12}>
         <TasksProgress sx={{ height: '100%' }} value={75.5} />
       </Grid>
       <Grid lg={3} sm={6} xs={12}>
-        <TotalProfit sx={{ height: '100%' }} value="$15k" />
+        <TotalProfit sx={{ height: '100%' }} value={`BTCUSD: ${bybitData1}`} loading={isFetchingBybit1} />
       </Grid>
       <Grid lg={8} xs={12}>
         <Sales

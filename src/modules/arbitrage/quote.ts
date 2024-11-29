@@ -1,10 +1,11 @@
-import { ethers, Provider } from 'ethers'
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+import { ethers, type Provider } from 'ethers'
 import { computePoolAddress } from '@uniswap/v3-sdk'
 import Quoter from '@uniswap/v3-periphery/artifacts/contracts/lens/Quoter.sol/Quoter.json'
 import IUniswapV3PoolABI from '@uniswap/v3-core/artifacts/contracts/interfaces/IUniswapV3Pool.sol/IUniswapV3Pool.json'
 
 
-import { Token } from '@uniswap/sdk-core'
+import { type Token } from '@uniswap/sdk-core'
 import { SwapConfig } from '../../config'
 import { QUOTER_CONTRACT_ADDRESS, POOL_FACTORY_CONTRACT_ADDRESS } from '../../constants'
 import { fromReadableAmount, toReadableAmount } from '../../utils'
@@ -22,15 +23,15 @@ export async function quote(
 
   const poolConstants = await getPoolConstants(token0, token1)
 
-  const quotedAmountOut = await quoterContract
+  const quotedAmountOut = (await quoterContract
     .getFunction('quoteExactInputSingle')
     .staticCall(
       token0.address,
       token1.address,
       poolConstants.fee,
-      fromReadableAmount(+inputAmout, token0.decimals).toString(),
+      fromReadableAmount(Number(inputAmout), token0.decimals).toString(),
       0,
-    )
+    )) as number
 
   return toReadableAmount(quotedAmountOut, token1.decimals)
 }
@@ -70,5 +71,5 @@ async function getPoolConstants(
 }
 
 export function getProvider(): Provider {
-  return new ethers.JsonRpcProvider(SwapConfig.rpc.local)
+  return new ethers.JsonRpcProvider(SwapConfig.rpc.mainnet)
 }

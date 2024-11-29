@@ -10,6 +10,7 @@ import { Receipt as ReceiptIcon } from '@phosphor-icons/react/dist/ssr/Receipt';
 export interface TotalProfitProps {
   sx?: SxProps;
   value: string;
+  loading: boolean
 }
 
 export function TotalProfit({ value, sx }: TotalProfitProps): React.JSX.Element {

@@ -56,6 +56,7 @@ module.exports = {
       },
     ],
 
+    'no-console': 'off',
     // Deactivated
     '@typescript-eslint/dot-notation': 'off', // paths are used with a dot notation
     '@typescript-eslint/no-misused-promises': 'off', // onClick with async fails
